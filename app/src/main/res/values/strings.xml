@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+
+    <!--Error String-->
+    <string name="invalid_email">Email address is invalid</string>
+    <string name="empty_text">Field cannot be empty</string>
+    <string name="password_less">Password length less than 8</string>
+
+    <!-- Welcome String -->
+    <string name="welcome_page_illustration">welcome page illustration</string>
+    <string name="welcome_title">Welcome to Story App</string>
+    <string name="welcome_body">Welcome to Story App, the platform where your stories find their voice and meaning. Here, we believe that every experience and emotion holds a unique beauty and power.</string>
+    <string name="welcome_to_login">Login</string>
+    <string name="welcome_to_register">Register</string>
+
+    <!-- Login String -->
+    <string name="login_page_illustration">login page illustration</string>
+    <string name="login_title">Welcome Back!</string>
+    <string name="login">Login</string>
+    <string name="login_subtitle">Enter your email and password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="register_question">Don\'t have an account ?</string>
+
+</resources>
