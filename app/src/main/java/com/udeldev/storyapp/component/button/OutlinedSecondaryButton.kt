@@ -39,6 +39,6 @@ class OutlinedSecondaryButton : AppCompatButton {
 
     private fun initComponent (){
         backgroundBtn = ContextCompat.getDrawable(context, R.drawable.btn_outlined_secondary) as Drawable
-        textColor = ContextCompat.getColor(context, R.color.red_300)
+        textColor = ContextCompat.getColor(context, R.color.red_400)
     }
 }

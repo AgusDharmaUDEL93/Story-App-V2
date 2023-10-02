@@ -41,8 +41,8 @@ class EmailEditText : AppCompatEditText {
     }
 
     private fun validEmail(email: String): String? {
-        if (email.isEmpty()) return R.string.empty_text.toString()
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) return R.string.invalid_email.toString()
+        if (email.isEmpty()) return resources.getString(R.string.empty_text)
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) return resources.getString(R.string.invalid_email)
         return null
     }
 }

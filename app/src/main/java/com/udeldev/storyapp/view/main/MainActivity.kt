@@ -9,10 +9,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.udeldev.storyapp.R
 import com.udeldev.storyapp.databinding.ActivityMainBinding
+import com.udeldev.storyapp.helper.adapter.StoryListAdapter
 import com.udeldev.storyapp.helper.factory.ViewModelFactory
 import com.udeldev.storyapp.helper.utils.Result
+import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.model.response.AllStoryResponse
 import com.udeldev.storyapp.view.welcome.WelcomeActivity
 
@@ -20,12 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var activityMainBinding: ActivityMainBinding
-    private var token: String = ""
+    private lateinit var adapter: StoryListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initComponent()
         setContentView(activityMainBinding.root)
+
+        activityMainBinding.recyclerMainStories.layoutManager = LinearLayoutManager(this)
+        adapter = StoryListAdapter()
+        activityMainBinding.recyclerMainStories.adapter = adapter
 
         if (savedInstanceState === null) {
             mainViewModel.getSession()
@@ -49,10 +56,14 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.story.observe(this) { resources ->
             when (resources) {
                 is Result.Success -> {
-                    activityMainBinding.testi.text = resources.data.listStory.toString()
+                    setStoryListData(resources.data.listStory)
                 }
                 is Result.Loading -> showLoading(resources.state)
-                is Result.Failure -> showErrorDialog(resources.throwable)
+                is Result.Failure -> {
+                    if (!isFinishing){
+                        showErrorDialog(resources.throwable)
+                    }
+                }
             }
 
 
@@ -74,8 +85,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setStoryListData(storyList: List<ListStoryItem?>?) {
+        adapter.setStoryList(storyList)
+        activityMainBinding.recyclerMainStories.adapter = adapter
+    }
+
     private fun showLoading(isLoading: Boolean) {
-        Log.i("Loading", isLoading.toString())
         activityMainBinding.progressMain.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 

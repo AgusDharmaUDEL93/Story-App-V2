@@ -6,6 +6,17 @@
     <string name="empty_text">Field cannot be empty</string>
     <string name="password_less">Password length less than 8</string>
 
+    <!-- Basic String -->
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="name">Name</string>
+    <string name="confirm_password">Confirm Password</string>
+
     <!-- Welcome String -->
     <string name="welcome_page_illustration">welcome page illustration</string>
     <string name="welcome_title">Welcome to Story App</string>
@@ -16,11 +27,16 @@
     <!-- Login String -->
     <string name="login_page_illustration">login page illustration</string>
     <string name="login_title">Welcome Back!</string>
-    <string name="login">Login</string>
     <string name="login_subtitle">Enter your email and password</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="register">Register</string>
+    <string name="login_question">Have an account ?</string>
+
+    <!-- Register String -->
+    <string name="register_page_illustration">register page illustration</string>
     <string name="register_question">Don\'t have an account ?</string>
+    <string name="register_title">Create New Account !</string>
+    <string name="register_subtitle">Insert your personal data</string>
+
+    <!-- Card String -->
+    <string name="image_card_desc">Image data in card</string>
 
 </resources>

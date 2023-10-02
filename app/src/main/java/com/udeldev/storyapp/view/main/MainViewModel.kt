@@ -1,17 +1,20 @@
 package com.udeldev.storyapp.view.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.response.AllStoryResponse
-import com.udeldev.storyapp.repository.StoryRepository
+import com.udeldev.storyapp.repository.story.StoryRepositoryImpl
+import com.udeldev.storyapp.repository.token.TokenRepositoryImpl
 import kotlinx.coroutines.launch
 
 
-class MainViewModel(private val storyRepository: StoryRepository) : ViewModel() {
+class MainViewModel(
+    private val storyRepositoryImpl: StoryRepositoryImpl,
+    private val tokenRepository: TokenRepositoryImpl,
+) : ViewModel() {
 
     private val _story = MutableLiveData<Result<AllStoryResponse>>()
     val story: LiveData<Result<AllStoryResponse>>
@@ -22,19 +25,20 @@ class MainViewModel(private val storyRepository: StoryRepository) : ViewModel() 
         get() = _token
 
     fun getSession() {
-        _token.value = storyRepository.getSession()
+        _token.value = tokenRepository.getSession()
     }
 
     fun logoutSession() {
         viewModelScope.launch {
-            storyRepository.logout()
+            tokenRepository.logout()
         }
         _token.value = ""
     }
 
     fun getAllStory() {
-        storyRepository.getAllStory().observeForever {
-            _story.value = it
+        viewModelScope.launch {
+            _story.value = Result.Loading(true)
+            _story.value = storyRepositoryImpl.getAllStory(tokenRepository.getSession())
         }
     }
 

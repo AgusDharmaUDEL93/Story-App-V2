@@ -41,8 +41,8 @@ class PasswordEditText : AppCompatEditText {
     }
 
     private fun validPassword(password: String): String? {
-        if (password.isEmpty()) return R.string.empty_text.toString()
-        if (password.length < 8) return R.string.password_less.toString()
+        if (password.isEmpty()) return resources.getString(R.string.empty_text)
+        if (password.length < 8) return resources.getString(R.string.password_less)
         return null
     }
 }
