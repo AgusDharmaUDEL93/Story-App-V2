@@ -27,6 +27,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+                android:id="@+id/register_layout_component"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -59,7 +60,7 @@
                     />
 
             <TextView
-                    android:id="@+id/text_register_email_name"
+                    android:id="@+id/text_register_name_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -215,10 +216,10 @@
                         />
 
                 <TextView
-                        android:id="@+id/text_button_register_register"
+                        android:id="@+id/text_button_register_login"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/register"
+                        android:text="@string/login"
                         android:textColor="@color/teal_400"
                         />
             </LinearLayout>

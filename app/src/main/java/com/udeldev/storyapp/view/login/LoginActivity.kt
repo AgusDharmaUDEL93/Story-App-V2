@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (activityLoginBinding.editLoginEmailLayout.error != null || activityLoginBinding.editLoginPasswordLayout.error != null) {
-                Toast.makeText(this, "Please insert the valid data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.invalid_data), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             loginViewModel.loginUser(
@@ -101,19 +101,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        val visibility = if (isLoading) View.GONE else View.VISIBLE
-
         activityLoginBinding.progressLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
-        activityLoginBinding.imageLoginIllustration.visibility = visibility
-        activityLoginBinding.editLoginEmailLayout.visibility = visibility
-        activityLoginBinding.editLoginPasswordLayout.visibility = visibility
-        activityLoginBinding.buttonLogin.visibility = visibility
-        activityLoginBinding.textLoginTitle.visibility = visibility
-        activityLoginBinding.textLoginSubtitle.visibility = visibility
-        activityLoginBinding.textLoginQuestion.visibility = visibility
-        activityLoginBinding.textButtonLoginRegister.visibility = visibility
-        activityLoginBinding.textLoginEmailLabel.visibility = visibility
-        activityLoginBinding.textLoginPasswordLabel.visibility = visibility
+        activityLoginBinding.loginLayoutComponent.visibility =  if (isLoading) View.GONE else View.VISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

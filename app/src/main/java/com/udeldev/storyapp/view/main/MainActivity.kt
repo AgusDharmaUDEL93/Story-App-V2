@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MediatorLiveData
@@ -17,6 +20,7 @@ import com.udeldev.storyapp.helper.factory.ViewModelFactory
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.model.response.AllStoryResponse
+import com.udeldev.storyapp.view.add.AddActivity
 import com.udeldev.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -36,38 +40,48 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState === null) {
             mainViewModel.getSession()
-            mainViewModel.getAllStory()
         }
 
 
         mainViewModel.token.observe(this) { token ->
-            if (token.isEmpty()) {
+            if (token.isNullOrEmpty()) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
+                return@observe
             }
+            mainViewModel.getAllStory()
             Log.i("MainActivity", token)
         }
 
-
-        activityMainBinding.logout.setOnClickListener {
-            mainViewModel.logoutSession()
-        }
-
-        mainViewModel.story.observe(this) { resources ->
-            when (resources) {
+        mainViewModel.story.observe(this) { result ->
+            when (result) {
                 is Result.Success -> {
-                    setStoryListData(resources.data.listStory)
+                    setStoryListData(result.data.listStory)
                 }
-                is Result.Loading -> showLoading(resources.state)
+                is Result.Loading -> showLoading(result.state)
                 is Result.Failure -> {
                     if (!isFinishing){
-                        showErrorDialog(resources.throwable)
+                        showErrorDialog(result.throwable)
                     }
                 }
             }
-
-
         }
+        activityMainBinding.buttonMainAdd.setOnClickListener {
+            startActivity(Intent(this, AddActivity::class.java))
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_main_logout -> mainViewModel.logoutSession()
+            R.id.menu_main_setting -> startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun showErrorDialog(message: String) {

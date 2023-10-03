@@ -5,6 +5,19 @@
     <string name="invalid_email">Email address is invalid</string>
     <string name="empty_text">Field cannot be empty</string>
     <string name="password_less">Password length less than 8</string>
+    <string name="invalid_data">Please insert the valid data</string>
+    <string name="password_not_matched">Password not matched</string>
+    <string name="cannot_get_story_detail">Can\'t get story detail!</string>
+    <string name="no_image">"Please insert the image!"</string>
+    <string name="no_media_selected">No media selected</string>
+    <string name="cannot_get_camera">Can\'t get camera media</string>
+    <string name="desc_empty">Description can\'t be empty</string>
+
+    <!-- Utils String -->
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="success_create_user">Success create user</string>
+    <string name="success_post_story">Post has been created</string>
 
     <!-- Basic String -->
     <string name="login">Login</string>
@@ -16,6 +29,12 @@
     <string name="description">Description</string>
     <string name="name">Name</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="logout">Logout</string>
+    <string name="languange">Languange</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="submit">Submit</string>
+
 
     <!-- Welcome String -->
     <string name="welcome_page_illustration">welcome page illustration</string>
@@ -38,5 +57,11 @@
 
     <!-- Card String -->
     <string name="image_card_desc">Image data in card</string>
+
+    <!-- Detail String -->
+    <string name="detail_page_image_desc">detail page story image</string>
+
+    <!-- Add String -->
+    <string name="adding_new_story_post">adding new story post</string>
 
 </resources>

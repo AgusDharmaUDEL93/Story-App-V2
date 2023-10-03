@@ -6,14 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.response.AllStoryResponse
+import com.udeldev.storyapp.repository.story.StoryRepository
 import com.udeldev.storyapp.repository.story.StoryRepositoryImpl
+import com.udeldev.storyapp.repository.token.TokenRepository
 import com.udeldev.storyapp.repository.token.TokenRepositoryImpl
 import kotlinx.coroutines.launch
 
 
 class MainViewModel(
-    private val storyRepositoryImpl: StoryRepositoryImpl,
-    private val tokenRepository: TokenRepositoryImpl,
+    private val storyRepository: StoryRepository,
+    private val tokenRepository: TokenRepository,
 ) : ViewModel() {
 
     private val _story = MutableLiveData<Result<AllStoryResponse>>()
@@ -38,7 +40,9 @@ class MainViewModel(
     fun getAllStory() {
         viewModelScope.launch {
             _story.value = Result.Loading(true)
-            _story.value = storyRepositoryImpl.getAllStory(tokenRepository.getSession())
+            val temp = storyRepository.getAllStory(tokenRepository.getSession())
+            _story.value = Result.Loading(false)
+            _story.value = temp
         }
     }
 

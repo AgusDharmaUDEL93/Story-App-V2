@@ -1,15 +1,20 @@
 package com.udeldev.storyapp.helper.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udeldev.storyapp.R
 import com.udeldev.storyapp.model.entity.ListStoryItem
+import com.udeldev.storyapp.view.detail.DetailActivity
 
 class StoryListAdapter : RecyclerView.Adapter<StoryListAdapter.StoryListViewHolder>() {
 
@@ -42,5 +47,18 @@ class StoryListAdapter : RecyclerView.Adapter<StoryListAdapter.StoryListViewHold
         Glide.with(holder.itemView.context)
             .load(_storyList?.get(position)?.photoUrl ?: "https://i.stack.imgur.com/l60Hf.png")
             .into(holder.imageStoryList)
+        holder.itemView.setOnClickListener {
+            val moveIntent = Intent(holder.itemView.context, DetailActivity::class.java)
+            moveIntent.putExtra(DetailActivity.EXTRA_ID, _storyList?.get(position)?.id)
+            val optionsCompat: ActivityOptionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    holder.itemView.context as Activity,
+                    Pair(holder.imageStoryList, "image_detail_story"),
+                    Pair(holder.titleStoryList, "text_detail_title"),
+                    Pair(holder.descStoryList, "text_detail_desc"),
+                    Pair(holder.dateStoryList, "text_detail_date")
+                )
+            holder.itemView.context.startActivity(moveIntent, optionsCompat.toBundle())
+        }
     }
 }

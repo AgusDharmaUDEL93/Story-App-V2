@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+
+    <!--Error String-->
+    <string name="invalid_email">Alamat email tidak valid</string>
+    <string name="empty_text">Field tidak boleh kosong</string>
+    <string name="password_less">Kata sandi kurang dari 8</string>
+    <string name="invalid_data">Silakan masukkan data yang valid</string>
+    <string name="password_not_matched">Kata sandi tidak cocok</string>
+    <string name="cannot_get_story_detail">Tidak bisa mendapatkan detail cerita!</string>
+    <string name="no_image">Silakan masukkan gambar!</string>
+    <string name="no_media_selected">Tidak ada media yang dipilih</string>
+    <string name="cannot_get_camera">Tidak bisa mendapatkan media kamera</string>
+    <string name="desc_empty">Deskripsi wajib diisi</string>
+
+    <!-- Utils String -->
+    <string name="error">Kesalahan</string>
+    <string name="success">Sukses</string>
+    <string name="success_create_user">Sukses membuat pengguna</string>
+    <string name="success_post_story">Postingan telah dibuat</string>
+
+    <!-- Basic String -->
+    <string name="login">Masuk</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="register">Daftar</string>
+    <string name="date">Tanggal</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
+    <string name="name">Nama</string>
+    <string name="confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="logout">Keluar</string>
+    <string name="languange">Bahasa</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="submit">Kumpul</string>
+
+
+    <!-- Welcome String -->
+    <string name="welcome_page_illustration">ilustrasi halaman selamat datang</string>
+    <string name="welcome_title">Selamat datang di Story App</string>
+    <string name="welcome_body">Selamat datang di Story App, platform tempat cerita Anda menemukan suara dan maknanya. Di sini, kami percaya bahwa setiap pengalaman dan emosi menyimpan keindahan dan kekuatan yang unik.</string>
+    <string name="welcome_to_login">Masuk</string>
+    <string name="welcome_to_register">Daftar</string>
+
+    <!-- Login String -->
+    <string name="login_page_illustration">ilustrasi halaman masuk</string>
+    <string name="login_title">Selamat Datang kembali!</string>
+    <string name="login_subtitle">Masukkan email dan kata sandi Anda</string>
+    <string name="login_question">Punya akun?</string>
+
+    <!-- Register String -->
+    <string name="register_page_illustration">ilustrasi halaman pendaftaran</string>
+    <string name="register_question">Belum punya akun?</string>
+    <string name="register_title">Buat akun baru !</string>
+    <string name="register_subtitle">Masukkan data pribadi Anda</string>
+
+    <!-- Card String -->
+    <string name="image_card_desc">Data gambar di card</string>
+
+    <!-- Detail String -->
+    <string name="detail_page_image_desc">gambar cerita halaman detail</string>
+
+    <!-- Add String -->
+    <string name="adding_new_story_post">menambahkan postingan cerita baru</string>
+</resources>
