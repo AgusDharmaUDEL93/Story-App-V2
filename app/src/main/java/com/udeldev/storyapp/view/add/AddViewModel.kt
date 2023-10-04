@@ -15,7 +15,7 @@ import okhttp3.RequestBody
 class AddViewModel(
     private val storyRepository: StoryRepository,
     private val tokenRepository: TokenRepository
-) :ViewModel() {
+) : ViewModel() {
 
     private val _response = MutableLiveData<Result<BasicResponse>>()
     val response: LiveData<Result<BasicResponse>>
@@ -33,10 +33,12 @@ class AddViewModel(
         _token.value = tokenRepository.getSession()
     }
 
-    fun postMultiPart(file : MultipartBody.Part, description : RequestBody){
+    fun postMultiPart(
+        file: MultipartBody.Part, description: RequestBody, lat: Double? = null, lon: Double? = null
+    ) {
         viewModelScope.launch {
             _response.value = Result.Loading(true)
-            val temp = storyRepository.postMultiPart(tokenRepository.getSession(), file, description)
+            val temp = storyRepository.postMultiPart(tokenRepository.getSession(), file, description, lat, lon)
             _response.value = Result.Loading(false)
             _response.value = temp
         }

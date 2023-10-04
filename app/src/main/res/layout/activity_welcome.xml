@@ -5,7 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.welcome.WelcomeActivity">
+        tools:context=".view.welcome.WelcomeActivity"
+        >
     <ImageView
             android:id="@+id/image_welcome_illustration"
             android:contentDescription="@string/welcome_page_illustration"
@@ -30,6 +31,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="28sp"
+            android:layout_marginHorizontal="5dp"
             />
 
     <TextView
@@ -66,7 +68,7 @@
             android:layout_height="wrap_content"
             android:text="@string/welcome_to_register"
             android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="15dp"
             app:layout_constraintTop_toBottomOf="@id/button_welcome_login"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

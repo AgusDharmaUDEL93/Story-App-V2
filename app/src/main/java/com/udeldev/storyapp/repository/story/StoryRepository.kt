@@ -10,8 +10,12 @@ import okhttp3.RequestBody
 
 interface StoryRepository {
 
-    suspend fun getAllStory(token : String) : Result<AllStoryResponse>
-    suspend fun getDetailStory(token : String,id:String) : Result<DetailStoryResponse>
+    suspend fun getAllStory(token: String): Result<AllStoryResponse>
+    suspend fun getDetailStory(token: String, id: String): Result<DetailStoryResponse>
 
-    suspend fun postMultiPart (token: String, file : MultipartBody.Part, description : RequestBody) : Result<BasicResponse>
+    suspend fun postMultiPart(
+        token: String, file: MultipartBody.Part, description: RequestBody, lat: Double? = null, lon: Double? = null
+    ): Result<BasicResponse>
+
+    suspend fun getAllStoryLocation(token: String): Result<AllStoryResponse>
 }

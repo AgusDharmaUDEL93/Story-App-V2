@@ -89,7 +89,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
                     app:errorEnabled="true"
 
                     >
@@ -104,6 +103,16 @@
                         android:inputType="textMultiLine"
                         tools:ignore="SpeakableTextPresentCheck"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_add_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/get_user_location"
+                    app:switchPadding="10dp"
+                    android:layout_gravity="end"
+                    />
 
             <Button
                     android:id="@+id/button_add_submit"

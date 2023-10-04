@@ -1,7 +1,11 @@
 package com.udeldev.storyapp.view.add
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +16,10 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.udeldev.storyapp.R
 import com.udeldev.storyapp.databinding.ActivityAddBinding
 import com.udeldev.storyapp.helper.factory.ViewModelFactory
@@ -34,7 +41,10 @@ class AddActivity : AppCompatActivity() {
     private lateinit var addViewModel: AddViewModel
 
     private var currentImageUri: Uri? = null
+    private var myLocation: Location? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initComponent()
@@ -42,9 +52,11 @@ class AddActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        if (savedInstanceState === null){
+        if (savedInstanceState === null) {
             addViewModel.getSession()
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         activityAddBinding.buttonAddGallery.setOnClickListener {
             launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -55,7 +67,7 @@ class AddActivity : AppCompatActivity() {
             launcherIntentCamera.launch(currentImageUri)
         }
 
-        addViewModel.token.observe(this){token ->
+        addViewModel.token.observe(this) { token ->
             if (token.isNullOrEmpty()) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
@@ -63,27 +75,42 @@ class AddActivity : AppCompatActivity() {
             }
         }
 
-        addViewModel.response.observe(this){result ->
-            when (result){
+        activityAddBinding.switchAddLocation.setOnCheckedChangeListener(){ _, isChecked ->
+            if (isChecked){
+                getMyLastLocation()
+                Log.i("AddActivity", "Lat : ${myLocation?.latitude}, Long : ${myLocation?.longitude}")
+                return@setOnCheckedChangeListener
+            }
+        }
+
+        addViewModel.response.observe(this) { result ->
+            when (result) {
                 is Result.Failure -> showDialog(resources.getString(R.string.error), result.throwable)
                 is Result.Loading -> showLoading(result.state)
-                is Result.Success -> showDialog(resources.getString(R.string.success), result.data.message ?: resources.getString(R.string.success_post_story))
+                is Result.Success -> showDialog(
+                    resources.getString(R.string.success),
+                    result.data.message ?: resources.getString(R.string.success_post_story)
+                )
             }
         }
 
         activityAddBinding.buttonAddSubmit.setOnClickListener {
-            if (currentImageUri == null){
+            if (currentImageUri == null) {
                 Toast.makeText(this, resources.getString(R.string.no_image), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (activityAddBinding.editAddDesc.text.toString().isEmpty()){
+            if (activityAddBinding.editAddDesc.text.toString().isEmpty()) {
                 activityAddBinding.editAddDescLayout.error = resources.getString(R.string.desc_empty)
                 return@setOnClickListener
             }
 
+            Log.i("AddActivity", "Lat : ${myLocation?.latitude} Lon : ${myLocation?.longitude}")
+
             currentImageUri?.let {
                 val imageFile = uriToFile(it, this).reduceFileImage()
                 val description = activityAddBinding.editAddDesc.text.toString()
+                val lat = myLocation?.latitude
+                val lon = myLocation?.longitude
 
                 addViewModel.postMultiPart(
                     MultipartBody.Part.createFormData(
@@ -91,7 +118,9 @@ class AddActivity : AppCompatActivity() {
                         imageFile.name,
                         imageFile.asRequestBody("image/jpeg".toMediaType())
                     ),
-                    description.toRequestBody("text/plain".toMediaType())
+                    description.toRequestBody("text/plain".toMediaType()),
+                    lat,
+                    lon
                 )
             }
         }
@@ -112,7 +141,7 @@ class AddActivity : AppCompatActivity() {
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
-        if (uri != null){
+        if (uri != null) {
             currentImageUri = uri
             showImage()
             return@registerForActivityResult
@@ -128,12 +157,61 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        activityAddBinding.progressAdd.visibility = if (isLoading) View.VISIBLE else View.GONE
-        activityAddBinding.addLayoutComponent.visibility =  if (isLoading) View.GONE else View.VISIBLE
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+            }
+        }
+
+    private fun getMyLastLocation()  {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    myLocation = location
+                    Toast.makeText(this, "Location found", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+                Toast.makeText(
+                    this,
+                    "Location is not found. Try Again",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            return
+        }
+        requestPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+
     }
 
-    private fun showDialog(title : String, message: String) {
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        activityAddBinding.progressAdd.visibility = if (isLoading) View.VISIBLE else View.GONE
+        activityAddBinding.addLayoutComponent.visibility = if (isLoading) View.GONE else View.VISIBLE
+    }
+
+    private fun showDialog(title: String, message: String) {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
@@ -151,7 +229,7 @@ class AddActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onBackPressed()
                 return true
             }
         }
@@ -163,7 +241,7 @@ class AddActivity : AppCompatActivity() {
         return ViewModelProvider(this, factory)[AddViewModel::class.java]
     }
 
-    private fun initComponent(){
+    private fun initComponent() {
         activityAddBinding = ActivityAddBinding.inflate(layoutInflater)
         addViewModel = obtainViewModel(this)
     }

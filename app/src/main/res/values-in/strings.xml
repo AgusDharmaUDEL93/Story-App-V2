@@ -35,7 +35,7 @@
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="submit">Kumpul</string>
-
+    <string name="maps">Maps</string>
 
     <!-- Welcome String -->
     <string name="welcome_page_illustration">ilustrasi halaman selamat datang</string>
@@ -64,4 +64,14 @@
 
     <!-- Add String -->
     <string name="adding_new_story_post">menambahkan postingan cerita baru</string>
+    <string name="get_user_location">Lokasi Saya</string>
+
+
+    <!-- Maps String -->
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="normal">Normal</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
+    <string name="hybrid">Hybrid</string>
+
 </resources>

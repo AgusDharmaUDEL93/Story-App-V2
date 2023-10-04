@@ -14,6 +14,7 @@ import com.udeldev.storyapp.view.add.AddViewModel
 import com.udeldev.storyapp.view.detail.DetailViewModel
 import com.udeldev.storyapp.view.login.LoginViewModel
 import com.udeldev.storyapp.view.main.MainViewModel
+import com.udeldev.storyapp.view.maps.MapsViewModel
 import com.udeldev.storyapp.view.register.RegisterViewModel
 
 class ViewModelFactory private constructor(
@@ -34,6 +35,8 @@ class ViewModelFactory private constructor(
             return DetailViewModel(storyRepository, tokenRepository) as T
         } else if (modelClass.isAssignableFrom(AddViewModel::class.java)){
             return AddViewModel(storyRepository, tokenRepository) as T
+        } else if (modelClass.isAssignableFrom(MapsViewModel::class.java)){
+            return MapsViewModel(storyRepository, tokenRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

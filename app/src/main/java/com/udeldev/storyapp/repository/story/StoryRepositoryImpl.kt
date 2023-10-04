@@ -81,11 +81,13 @@ class StoryRepositoryImpl : StoryRepository {
     override suspend fun postMultiPart(
         token: String,
         file: MultipartBody.Part,
-        description: RequestBody
+        description: RequestBody,
+        lat : Double? ,
+        lon : Double?
     ): Result<BasicResponse> {
         return suspendCoroutine { continuation ->
             var postStoryResult: Result<BasicResponse>
-            val client = ApiConfig.getApiService().postStoriesData("Bearer $token", file, description)
+            val client = ApiConfig.getApiService().postStoriesData("Bearer $token", file, description, lat, lon)
             client.enqueue(
                 object : Callback<BasicResponse> {
                     override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
@@ -102,6 +104,34 @@ class StoryRepositoryImpl : StoryRepository {
                     override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                         postStoryResult = Result.Failure(t.toString())
                         continuation.resume(postStoryResult)
+                    }
+
+                }
+            )
+        }
+    }
+
+    override suspend fun getAllStoryLocation(token: String): Result<AllStoryResponse> {
+        return suspendCoroutine { continuation ->
+            var allStoryResult: Result<AllStoryResponse>
+            val client = ApiConfig.getApiService().getAllStoryLocation("Bearer $token")
+            client.enqueue(
+                object : Callback<AllStoryResponse> {
+                    override fun onResponse(call: Call<AllStoryResponse>, response: Response<AllStoryResponse>) {
+                        if (response.isSuccessful) {
+                            allStoryResult = Result.Success(response.body() as AllStoryResponse)
+                            continuation.resume(allStoryResult)
+                            return
+                        }
+                        val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                        allStoryResult = Result.Failure(jsonObj.getString("message") ?: response.message())
+                        continuation.resume(allStoryResult)
+                    }
+
+                    override fun onFailure(call: Call<AllStoryResponse>, t: Throwable) {
+                        allStoryResult = Result.Failure(t.toString())
+                        continuation.resume(allStoryResult)
+
                     }
 
                 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -37,14 +38,21 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
     val lifecycleVersion = "2.6.2"
     val retrofitVersion = "2.9.0"
     val loggingInterceptorVersion = "4.9.0"
     val dataStorePreferencesVersion = "1.0.0"
     val kotlinxVersion = "1.6.4"
     val glideVersion = "4.11.0"
+    val materialVersion = "1.9.0"
+    val servicesMapsVersion = "18.1.0"
+    val servicesLocationVersion = "21.0.1"
 
-    implementation ("com.google.android.material:material:1.9.0")
+    implementation ("com.google.android.material:material:$materialVersion")
+
+    implementation("com.google.android.gms:play-services-maps:$servicesMapsVersion")
+    implementation("com.google.android.gms:play-services-location:$servicesLocationVersion")
 
     implementation("com.github.bumptech.glide:glide:$glideVersion")
 

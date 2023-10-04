@@ -21,6 +21,7 @@ import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.model.response.AllStoryResponse
 import com.udeldev.storyapp.view.add.AddActivity
+import com.udeldev.storyapp.view.maps.MapsActivity
 import com.udeldev.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +51,6 @@ class MainActivity : AppCompatActivity() {
                 return@observe
             }
             mainViewModel.getAllStory()
-            Log.i("MainActivity", token)
         }
 
         mainViewModel.story.observe(this) { result ->
@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_main_logout -> mainViewModel.logoutSession()
             R.id.menu_main_setting -> startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+            R.id.menu_main_maps -> startActivity(Intent(this, MapsActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
