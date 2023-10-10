@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.udeldev.storyapp.R
 import com.udeldev.storyapp.databinding.ActivityMainBinding
+import com.udeldev.storyapp.helper.adapter.LoadingStateAdapter
 import com.udeldev.storyapp.helper.adapter.StoryListAdapter
 import com.udeldev.storyapp.helper.factory.ViewModelFactory
 import com.udeldev.storyapp.helper.utils.Result
@@ -37,7 +38,11 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding.recyclerMainStories.layoutManager = LinearLayoutManager(this)
         adapter = StoryListAdapter()
-        activityMainBinding.recyclerMainStories.adapter = adapter
+        activityMainBinding.recyclerMainStories.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter{
+                adapter.retry()
+            }
+        )
 
         if (savedInstanceState === null) {
             mainViewModel.getSession()
@@ -50,22 +55,25 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 return@observe
             }
-            mainViewModel.getAllStory()
+            mainViewModel.getAllStoryPaging()
         }
 
-        mainViewModel.story.observe(this) { result ->
-            when (result) {
-                is Result.Success -> {
-                    setStoryListData(result.data.listStory)
+        mainViewModel.story.observe(this){result ->
+            when(result){
+                is Result.Failure -> {
+                    showErrorDialog(resources.getString(R.string.error))
                 }
                 is Result.Loading -> showLoading(result.state)
-                is Result.Failure -> {
-                    if (!isFinishing){
-                        showErrorDialog(result.throwable)
+                is Result.Success -> {
+                    result.data.observe(this){
+                        adapter.submitData(lifecycle, it)
                     }
                 }
             }
+
         }
+
+
         activityMainBinding.buttonMainAdd.setOnClickListener {
             startActivity(Intent(this, AddActivity::class.java))
         }
@@ -98,11 +106,6 @@ class MainActivity : AppCompatActivity() {
             create()
             show()
         }
-    }
-
-    private fun setStoryListData(storyList: List<ListStoryItem?>?) {
-        adapter.setStoryList(storyList)
-        activityMainBinding.recyclerMainStories.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -1,7 +1,14 @@
 package com.udeldev.storyapp.repository.story
 
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.udeldev.storyapp.helper.paging.StoryPagingSource
 import com.udeldev.storyapp.helper.preference.TokenPreference
 import com.udeldev.storyapp.helper.utils.Result
+import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.model.response.AllStoryResponse
 import com.udeldev.storyapp.model.response.BasicResponse
 import com.udeldev.storyapp.model.response.DetailStoryResponse
@@ -22,32 +29,16 @@ import kotlin.coroutines.suspendCoroutine
 
 class StoryRepositoryImpl : StoryRepository {
 
-    override suspend fun getAllStory(token: String): Result<AllStoryResponse> {
-        return suspendCoroutine { continuation ->
-            var allStoryResult: Result<AllStoryResponse>
-            val client = ApiConfig.getApiService().getAllStory("Bearer $token")
-            client.enqueue(
-                object : Callback<AllStoryResponse> {
-                    override fun onResponse(call: Call<AllStoryResponse>, response: Response<AllStoryResponse>) {
-                        if (response.isSuccessful) {
-                            allStoryResult = Result.Success(response.body() as AllStoryResponse)
-                            continuation.resume(allStoryResult)
-                            return
-                        }
-                        val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
-                        allStoryResult = Result.Failure(jsonObj.getString("message") ?: response.message())
-                        continuation.resume(allStoryResult)
-                    }
 
-                    override fun onFailure(call: Call<AllStoryResponse>, t: Throwable) {
-                        allStoryResult = Result.Failure(t.toString())
-                        continuation.resume(allStoryResult)
-
-                    }
-
-                }
-            )
-        }
+    override fun getAllStory(token: String): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(token)
+            }
+        ).liveData
     }
 
     override suspend fun getDetailStory(token: String, id: String): Result<DetailStoryResponse> {

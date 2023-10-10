@@ -13,6 +13,7 @@
     <string name="no_media_selected">Tidak ada media yang dipilih</string>
     <string name="cannot_get_camera">Tidak bisa mendapatkan media kamera</string>
     <string name="desc_empty">Deskripsi wajib diisi</string>
+    <string name="retry">Coba lagi</string>
 
     <!-- Utils String -->
     <string name="error">Kesalahan</string>

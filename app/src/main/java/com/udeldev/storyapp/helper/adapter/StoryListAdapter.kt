@@ -10,55 +10,63 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udeldev.storyapp.R
+import com.udeldev.storyapp.databinding.CardStoryBinding
 import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.view.detail.DetailActivity
 
-class StoryListAdapter : RecyclerView.Adapter<StoryListAdapter.StoryListViewHolder>() {
+class StoryListAdapter : PagingDataAdapter<ListStoryItem, StoryListAdapter.StoryListViewHolder>(DIFF_CALLBACK) {
 
-    private var _storyList : List<ListStoryItem?>? = emptyList()
-    @SuppressLint("NotifyDataSetChanged")
-    fun setStoryList (value : List<ListStoryItem?>?){
-        _storyList = value
-        notifyDataSetChanged()
-    }
-
-
-    inner class StoryListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView) {
-        val imageStoryList : ImageView = itemView.findViewById(R.id.image_story_list)
-        val dateStoryList : TextView = itemView.findViewById(R.id.text_story_list_date)
-        val titleStoryList :TextView = itemView.findViewById(R.id.text_story_list_title)
-        val descStoryList :TextView = itemView.findViewById(R.id.text_story_list_desc)
+    override fun onBindViewHolder(holder: StoryListViewHolder, position: Int) {
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_story, parent, false)
-        return StoryListViewHolder(view)
+        val binding = CardStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return StoryListViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = _storyList?.size ?: 0
+    inner class StoryListViewHolder(private val binding: CardStoryBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: ListStoryItem) {
+            binding.textStoryListTitle.text = data.name
+            binding.textStoryListDesc.text = data.description
+            binding.textStoryListDate.text = data.createdAt
+            Glide.with(itemView.context)
+                .load(data.photoUrl ?: "https://i.stack.imgur.com/l60Hf.png")
+                .into(binding.imageStoryList)
+            itemView.setOnClickListener {
+                val moveIntent = Intent(itemView.context, DetailActivity::class.java)
+                moveIntent.putExtra(DetailActivity.EXTRA_ID, data.id)
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        itemView.context as Activity,
+                        Pair(binding.imageStoryList, "image_detail_story"),
+                        Pair(binding.textStoryListTitle, "text_detail_title"),
+                        Pair(binding.textStoryListDesc, "text_detail_desc"),
+                        Pair(binding.textStoryListDate, "text_detail_date")
+                    )
+                itemView.context.startActivity(moveIntent, optionsCompat.toBundle())
+            }
+        }
 
-    override fun onBindViewHolder(holder: StoryListViewHolder, position: Int) {
-        holder.titleStoryList.text = _storyList?.get(position)?.name
-        holder.descStoryList.text = _storyList?.get(position)?.description
-        holder.dateStoryList.text = _storyList?.get(position)?.createdAt
-        Glide.with(holder.itemView.context)
-            .load(_storyList?.get(position)?.photoUrl ?: "https://i.stack.imgur.com/l60Hf.png")
-            .into(holder.imageStoryList)
-        holder.itemView.setOnClickListener {
-            val moveIntent = Intent(holder.itemView.context, DetailActivity::class.java)
-            moveIntent.putExtra(DetailActivity.EXTRA_ID, _storyList?.get(position)?.id)
-            val optionsCompat: ActivityOptionsCompat =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    holder.itemView.context as Activity,
-                    Pair(holder.imageStoryList, "image_detail_story"),
-                    Pair(holder.titleStoryList, "text_detail_title"),
-                    Pair(holder.descStoryList, "text_detail_desc"),
-                    Pair(holder.dateStoryList, "text_detail_date")
-                )
-            holder.itemView.context.startActivity(moveIntent, optionsCompat.toBundle())
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem.id == newItem.id
+            }
         }
     }
 }

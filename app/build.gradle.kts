@@ -45,11 +45,11 @@ dependencies {
     val dataStorePreferencesVersion = "1.0.0"
     val kotlinxVersion = "1.6.4"
     val glideVersion = "4.11.0"
-    val materialVersion = "1.9.0"
     val servicesMapsVersion = "18.1.0"
     val servicesLocationVersion = "21.0.1"
+    val paging3Version = "3.2.1"
 
-    implementation ("com.google.android.material:material:$materialVersion")
+    implementation("androidx.paging:paging-runtime-ktx:$paging3Version")
 
     implementation("com.google.android.gms:play-services-maps:$servicesMapsVersion")
     implementation("com.google.android.gms:play-services-location:$servicesLocationVersion")

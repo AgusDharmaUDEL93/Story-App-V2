@@ -12,6 +12,7 @@
     <string name="no_media_selected">No media selected</string>
     <string name="cannot_get_camera">Can\'t get camera media</string>
     <string name="desc_empty">Description can\'t be empty</string>
+    <string name="retry">Try Again</string>
 
     <!-- Utils String -->
     <string name="error">Error</string>
