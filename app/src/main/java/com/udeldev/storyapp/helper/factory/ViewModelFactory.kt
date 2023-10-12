@@ -9,7 +9,6 @@ import com.udeldev.storyapp.repository.auth.AuthRepositoryImpl
 import com.udeldev.storyapp.repository.story.StoryRepository
 import com.udeldev.storyapp.repository.story.StoryRepositoryImpl
 import com.udeldev.storyapp.repository.token.TokenRepository
-import com.udeldev.storyapp.repository.token.TokenRepositoryImpl
 import com.udeldev.storyapp.view.add.AddViewModel
 import com.udeldev.storyapp.view.detail.DetailViewModel
 import com.udeldev.storyapp.view.login.LoginViewModel
@@ -47,7 +46,7 @@ class ViewModelFactory private constructor(
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
-                    StoryRepositoryImpl(),
+                    Injection.provideStoryRepository(context),
                     Injection.provideTokenRepository(context),
                     AuthRepositoryImpl(),
                 )

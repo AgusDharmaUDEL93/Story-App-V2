@@ -1,13 +1,13 @@
 package com.udeldev.storyapp.view.maps
 
-import android.content.Context
-import androidx.lifecycle.*
-import com.udeldev.storyapp.helper.factory.ViewModelFactory
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.response.AllStoryResponse
 import com.udeldev.storyapp.repository.story.StoryRepository
 import com.udeldev.storyapp.repository.token.TokenRepository
-import com.udeldev.storyapp.view.main.MainViewModel
 import kotlinx.coroutines.launch
 
 class MapsViewModel (

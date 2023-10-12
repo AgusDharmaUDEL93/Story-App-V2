@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -22,6 +23,11 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+        animationsDisabled = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,16 +44,37 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
     val lifecycleVersion = "2.6.2"
     val retrofitVersion = "2.9.0"
     val loggingInterceptorVersion = "4.9.0"
     val dataStorePreferencesVersion = "1.0.0"
-    val kotlinxVersion = "1.6.4"
+    val kotlinxVersion = "1.7.1"
     val glideVersion = "4.11.0"
     val servicesMapsVersion = "18.1.0"
     val servicesLocationVersion = "21.0.1"
     val paging3Version = "3.2.1"
+    val roomVersion = "2.4.0-rc01"
+
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0") // InstantTaskExecutorRule
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    androidTestImplementation ("com.squareup.okhttp3:mockwebserver:4.9.3")
+    androidTestImplementation ("com.squareup.okhttp3:okhttp-tls:4.9.3")
+
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+
+    implementation("androidx.room:room-paging:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+
+    testImplementation("androidx.arch.core:core-testing:2.2.0") // InstantTaskExecutorRule
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1") //TestDispatcher
+    testImplementation("org.mockito:mockito-core:5.2.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 
     implementation("androidx.paging:paging-runtime-ktx:$paging3Version")
 

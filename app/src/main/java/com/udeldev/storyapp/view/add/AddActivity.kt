@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -16,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,7 +27,6 @@ import com.udeldev.storyapp.helper.utils.ImageUtils.Companion.getImageUri
 import com.udeldev.storyapp.helper.utils.ImageUtils.Companion.reduceFileImage
 import com.udeldev.storyapp.helper.utils.ImageUtils.Companion.uriToFile
 import com.udeldev.storyapp.helper.utils.Result
-import com.udeldev.storyapp.view.detail.DetailViewModel
 import com.udeldev.storyapp.view.main.MainActivity
 import com.udeldev.storyapp.view.welcome.WelcomeActivity
 import okhttp3.MediaType.Companion.toMediaType
@@ -75,7 +74,7 @@ class AddActivity : AppCompatActivity() {
             }
         }
 
-        activityAddBinding.switchAddLocation.setOnCheckedChangeListener(){ _, isChecked ->
+        activityAddBinding.switchAddLocation.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 getMyLastLocation()
                 Log.i("AddActivity", "Lat : ${myLocation?.latitude}, Long : ${myLocation?.longitude}")

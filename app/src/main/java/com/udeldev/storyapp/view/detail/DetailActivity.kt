@@ -2,25 +2,21 @@ package com.udeldev.storyapp.view.detail
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.udeldev.storyapp.R
 import com.udeldev.storyapp.databinding.ActivityDetailBinding
 import com.udeldev.storyapp.helper.factory.ViewModelFactory
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.entity.ListStoryItem
-import com.udeldev.storyapp.repository.story.StoryRepository
-import com.udeldev.storyapp.view.login.LoginViewModel
 import com.udeldev.storyapp.view.main.MainActivity
 import com.udeldev.storyapp.view.welcome.WelcomeActivity
 
-class DetailActivity() : AppCompatActivity() {
+class DetailActivity : AppCompatActivity() {
 
     private lateinit var activityDetailBinding: ActivityDetailBinding
     private lateinit var detailViewModel: DetailViewModel

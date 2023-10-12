@@ -1,23 +1,15 @@
 package com.udeldev.storyapp.repository.story
 
 import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
-import com.udeldev.storyapp.helper.paging.StoryPagingSource
-import com.udeldev.storyapp.helper.preference.TokenPreference
+import androidx.paging.*
+import com.udeldev.storyapp.data.story.StoryDatabase
+import com.udeldev.storyapp.data.story.StoryRemoteMediator
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.model.response.AllStoryResponse
 import com.udeldev.storyapp.model.response.BasicResponse
 import com.udeldev.storyapp.model.response.DetailStoryResponse
-import com.udeldev.storyapp.model.response.LoginResponse
 import com.udeldev.storyapp.provider.config.ApiConfig
-import com.udeldev.storyapp.provider.service.ApiService
-import com.udeldev.storyapp.repository.token.TokenRepositoryImpl
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -27,16 +19,17 @@ import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class StoryRepositoryImpl : StoryRepository {
+class StoryRepositoryImpl (private val storyDatabase: StoryDatabase) : StoryRepository {
 
-
+    @OptIn(ExperimentalPagingApi::class)
     override fun getAllStory(token: String): LiveData<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, token),
             pagingSourceFactory = {
-                StoryPagingSource(token)
+                storyDatabase.storyDao().getAllStory()
             }
         ).liveData
     }
@@ -73,8 +66,8 @@ class StoryRepositoryImpl : StoryRepository {
         token: String,
         file: MultipartBody.Part,
         description: RequestBody,
-        lat : Double? ,
-        lon : Double?
+        lat: Double?,
+        lon: Double?
     ): Result<BasicResponse> {
         return suspendCoroutine { continuation ->
             var postStoryResult: Result<BasicResponse>

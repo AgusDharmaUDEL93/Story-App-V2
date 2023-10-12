@@ -1,11 +1,9 @@
 package com.udeldev.storyapp.repository.auth
 
-import android.util.Log
 import com.udeldev.storyapp.helper.utils.Result
 import com.udeldev.storyapp.model.response.BasicResponse
 import com.udeldev.storyapp.model.response.LoginResponse
 import com.udeldev.storyapp.provider.config.ApiConfig
-import com.udeldev.storyapp.repository.story.StoryRepositoryImpl
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,9 +67,4 @@ class AuthRepositoryImpl : AuthRepository {
 
         }
     }
-    companion object{
-        private const val TAG = "AuthRepository"
-    }
-
-
 }

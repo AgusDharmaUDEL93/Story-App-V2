@@ -1,20 +1,15 @@
 package com.udeldev.storyapp.helper.adapter
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.udeldev.storyapp.R
 import com.udeldev.storyapp.databinding.CardStoryBinding
 import com.udeldev.storyapp.model.entity.ListStoryItem
 import com.udeldev.storyapp.view.detail.DetailActivity
@@ -59,7 +54,7 @@ class StoryListAdapter : PagingDataAdapter<ListStoryItem, StoryListAdapter.Story
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
             override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
                 return oldItem == newItem
             }
