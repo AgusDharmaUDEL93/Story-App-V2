@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udeldev.storyapp.helper.utils.Result
+import com.udeldev.storyapp.helper.utils.wrapEspressoIdlingResource
 import com.udeldev.storyapp.model.response.LoginResponse
 import com.udeldev.storyapp.repository.auth.AuthRepository
 import com.udeldev.storyapp.repository.token.TokenRepository
@@ -29,9 +30,11 @@ class LoginViewModel(
     }
 
     fun loginUser(email: String, password: String) {
-        viewModelScope.launch {
-            _user.value = Result.Loading(true)
-            _user.value = authRepository.loginUser(email, password)
+        wrapEspressoIdlingResource {
+            viewModelScope.launch {
+                _user.value = Result.Loading(true)
+                _user.value = authRepository.loginUser(email, password)
+            }
         }
     }
 

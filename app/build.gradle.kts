@@ -59,6 +59,8 @@ dependencies {
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     androidTestImplementation ("com.squareup.okhttp3:mockwebserver:4.9.3")
     androidTestImplementation ("com.squareup.okhttp3:okhttp-tls:4.9.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.4.0")//IntentsTestRule
+    implementation ("androidx.test.espresso:espresso-idling-resource:3.4.0")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

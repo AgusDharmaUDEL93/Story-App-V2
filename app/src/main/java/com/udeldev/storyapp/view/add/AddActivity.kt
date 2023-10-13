@@ -39,7 +39,7 @@ class AddActivity : AppCompatActivity() {
     private lateinit var activityAddBinding: ActivityAddBinding
     private lateinit var addViewModel: AddViewModel
 
-    private var currentImageUri: Uri? = null
+    var currentImageUri: Uri? = null
     private var myLocation: Location? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 

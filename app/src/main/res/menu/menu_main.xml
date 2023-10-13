@@ -7,6 +7,7 @@
             android:title="@string/logout"
             android:enabled="true"
             android:visible="true"
+            android:contentDescription="@string/logout"
             />
     <item
             android:id="@+id/menu_main_setting"
