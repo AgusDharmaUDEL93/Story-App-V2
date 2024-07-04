@@ -65,15 +65,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         activityLoginBinding.buttonLogin.setOnClickListener {
-            if (activityLoginBinding.editLoginEmail.text.isNullOrEmpty()){
-                activityLoginBinding.editLoginEmailLayout.error = resources.getString(R.string.empty_text)
+            if (activityLoginBinding.editLoginEmail.text.isNullOrEmpty()) {
+                activityLoginBinding.editLoginEmailLayout.error =
+                    resources.getString(R.string.empty_text)
             }
-            if (activityLoginBinding.editLoginPassword.text.isNullOrEmpty()){
-                activityLoginBinding.editLoginPasswordLayout.error = resources.getString(R.string.empty_text)
+            if (activityLoginBinding.editLoginPassword.text.isNullOrEmpty()) {
+                activityLoginBinding.editLoginPasswordLayout.error =
+                    resources.getString(R.string.empty_text)
             }
 
-            if (activityLoginBinding.editLoginEmailLayout.error != null || activityLoginBinding.editLoginPasswordLayout.error != null) {
-                Toast.makeText(this, resources.getString(R.string.invalid_data), Toast.LENGTH_SHORT).show()
+            if (
+                activityLoginBinding.editLoginEmailLayout.error != null ||
+                activityLoginBinding.editLoginPasswordLayout.error != null
+            ) {
+                Toast.makeText(this, resources.getString(R.string.invalid_data), Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             loginViewModel.loginUser(
@@ -101,7 +107,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         activityLoginBinding.progressLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
-        activityLoginBinding.loginLayoutComponent.visibility =  if (isLoading) View.GONE else View.VISIBLE
+        activityLoginBinding.loginLayoutComponent.visibility =
+            if (isLoading) View.GONE else View.VISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

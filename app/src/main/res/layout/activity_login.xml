@@ -161,6 +161,7 @@
                         android:text="@string/register"
                         android:textColor="@color/teal_400"
                         />
+
             </LinearLayout>
         </LinearLayout>
 
